@@ -1,0 +1,47 @@
+remove cuda:
+	cd /usr/local/
+	rm -rf cuda*
+
+
+uninstall nvidia-driver(old) and install new one
+	sudo apt purge nvidia-*
+	sudo add-apt-repository ppa:graphics-drivers/ppa
+	sudo apt update
+	sudo apt install nvidia-410
+
+install cuda:
+	`sudo dpkg -i cuda-repo-ubuntu1604-10-0-local-10.0.130-410.48_1.0-1_amd64.deb`
+	`sudo apt-key add /var/cuda-repo-<version>/7fa2af80.pub`
+	`sudo apt-get update`
+	`sudo apt-get install cuda`
+	
+	export PATH=/usr/local/cuda/bin:$PATH
+	export LD_LIBRARY_PATH=/usr/local/cuda/64:$LD_LIBRARY_PATH
+	source ~/.bashrc
+
+install cuDNN:
+	cuDNN Library for Linux
+	tar -xvf cudnn-10.0-linux-x64-v7.5.0.56.tgz
+	sudo cp cuda/include/cudnn.h /usr/local/cuda/include/
+	sudo cp cuda/lib64/lib* /usr/local/cuda/lib64/
+	
+	cd /usr/local/cuda/lib64/
+	sudo chmod +r libcudnn.so.7.5.0 
+	sudo ln -sf libcudnn.so.7.5.0 libcudnn.so.7
+	sudo ln -sf libcudnn.so.7 libcudnn.so
+	sudo ldconfig
+
+install tensorflow:
+	sudo pip3 install tensorflow-gpu==1.13.1
+
+note :
+	nvidia-410 need cuda 10.0 or up
+
+	CUDA Toolkit:
+	https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1604&target_type=deblocal
+
+	cudnn:
+	https://developer.nvidia.com/rdp/cudnn-archive
+	
+	cuda ref:
+	https://medium.com/@zihansyu/ubuntu-16-04-%E5%AE%89%E8%A3%9Dcuda-10-0-cudnn-7-3-8254cb642e70
